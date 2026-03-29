@@ -236,7 +236,7 @@ export const explorableProducts = [
     category: "Beauty",
   },
   {
-    id: 20,
+    id: 21,
     name: "Perfume",
     price: 192,
     originalPrice: 220,

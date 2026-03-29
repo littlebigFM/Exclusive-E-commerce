@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Eye, Heart } from "lucide-react";
 import StarRating from "./StarRating";
 import { useApp } from "../../Context/AppContext";
+import { Link } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
   const { addToCart, toggleWishlist, isInWishlist } = useApp();
@@ -34,12 +35,17 @@ const ProductCard = ({ product }) => {
             />
           </button>
 
-          <button className="w-[34px] h-[34px] bg-white rounded-full flex items-center justify-center shadow-sm hover:bg-[#DB4444] group/eye transition-colors">
+          {/* <button></button> */}
+
+          <Link
+            to={`/product/${product.id}`}
+            className="w-[34px] h-[34px] bg-white rounded-full flex items-center justify-center shadow-sm hover:bg-[#DB4444] group/eye transition-colors"
+          >
             <Eye
               size={16}
               className="text-black group-hover/eye:text-white transition-colors"
             />
-          </button>
+          </Link>
         </div>
 
         <img
