@@ -1,8 +1,9 @@
 import React from "react";
 
-const Button = ({ text, className }) => {
+const Button = ({ text, className, ...props }) => {
   return (
     <button
+      {...props}
       className={`
     bg-[#DB4444] 
     text-[#FAFAFA]

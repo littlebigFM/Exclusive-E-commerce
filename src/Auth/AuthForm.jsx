@@ -25,6 +25,9 @@ const AuthForm = ({
   nameSix,
   valueSix,
   onChangeSix,
+  onSubmit,
+  error,
+  loading,
 }) => {
   const navigate = useNavigate();
 
@@ -60,6 +63,7 @@ const AuthForm = ({
           <div className="flex flex-col gap-4">
             <Button
               text="Log in"
+              onClick={onSubmit}
               className="w-[370px] max-[400px]:w-[300px] max-[330px]:w-full"
             />
 
@@ -90,6 +94,12 @@ const AuthForm = ({
               Enter your details below
             </p>
           </div>
+
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-600 text-[14px] px-[16px] py-[12px] rounded-[4px]">
+              {error}
+            </div>
+          )}
 
           <div className="flex flex-col gap-4">
             <Input
@@ -132,7 +142,8 @@ const AuthForm = ({
 
           <div className="flex flex-col gap-4">
             <Button
-              text="Create account"
+              text={loading ? "Creating Account..." : "Create Account"}
+              onClick={onSubmit}
               className="w-[370px] max-[400px]:w-[300px] max-[330px]:w-full "
             />
 

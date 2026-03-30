@@ -3,6 +3,7 @@ export const loginInitialState = { email: "", password: "" };
 export const signUpInitialState = {
   firstName: "",
   lastName: "",
+  phone: "",
   email: "",
   password: "",
   confirmPassword: "",
