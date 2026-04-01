@@ -1,8 +1,10 @@
 import React from "react";
 
-const Button = ({ text, className, ...props }) => {
+const Button = ({ text, className, disabled, type = "button", ...props }) => {
   return (
     <button
+      type={type}
+      disabled={disabled}
       {...props}
       className={`
     bg-[#DB4444] 

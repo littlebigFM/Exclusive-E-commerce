@@ -28,13 +28,14 @@ const AuthForm = ({
   onSubmit,
   error,
   loading,
+  isFormValid,
 }) => {
   const navigate = useNavigate();
 
   return (
     <div>
       {type === "login" && (
-        <div className="flex flex-col gap-6">
+        <form onSubmit={onSubmit} className="flex flex-col gap-6">
           <div>
             <h1 className="font-medium text-[24px] min-[400px]:text-[30px] min-[600px]:text-[36px]">
               Log in to Exclusive
@@ -43,6 +44,12 @@ const AuthForm = ({
               Enter your details below
             </p>
           </div>
+
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-600 text-[14px] px-[16px] py-[12px] rounded-[4px]">
+              {error}
+            </div>
+          )}
 
           <div className="flex flex-col gap-4">
             <Input
@@ -62,8 +69,10 @@ const AuthForm = ({
 
           <div className="flex flex-col gap-4">
             <Button
-              text="Log in"
-              onClick={onSubmit}
+              text={loading ? "Logging in..." : "Log In"}
+              disabled={!isFormValid}
+              type="submit"
+              // onClick={onSubmit}
               className="w-[370px] max-[400px]:w-[300px] max-[330px]:w-full"
             />
 
@@ -81,11 +90,11 @@ const AuthForm = ({
               </span>
             </p>
           </div>
-        </div>
+        </form>
       )}
 
       {type === "signup" && (
-        <div className="flex flex-col gap-6">
+        <form onSubmit={onSubmit} className="flex flex-col gap-6">
           <div>
             <h1 className="font-medium text-[24px] min-[400px]:text-[30px] min-[600px]:text-[36px]">
               Create an account
@@ -142,8 +151,10 @@ const AuthForm = ({
 
           <div className="flex flex-col gap-4">
             <Button
+              type="submit"
+              disabled={!isFormValid}
               text={loading ? "Creating Account..." : "Create Account"}
-              onClick={onSubmit}
+              // onClick={onSubmit}
               className="w-[370px] max-[400px]:w-[300px] max-[330px]:w-full "
             />
 
@@ -161,7 +172,7 @@ const AuthForm = ({
               </span>
             </p>
           </div>
-        </div>
+        </form>
       )}
     </div>
   );

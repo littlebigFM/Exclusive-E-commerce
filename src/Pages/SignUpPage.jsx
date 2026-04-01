@@ -19,14 +19,6 @@ const SignUpPage = () => {
       ...formData,
       [event.target.name]: event.target.value,
     });
-
-    //or
-
-    // const { name, value } = event.target;
-    // setFormData((prevData) => ({
-    //   ...prevData,
-    //   [name]: value,
-    // }));
   };
 
   const handleSubmit = async (event) => {
@@ -67,6 +59,14 @@ const SignUpPage = () => {
     }
   };
 
+  const isFormValid =
+    formData.firstName.trim() !== "" &&
+    formData.lastName.trim() !== "" &&
+    formData.phone.trim() !== "" &&
+    formData.email.trim() !== "" &&
+    formData.password.trim() !== "" &&
+    formData.confirmPassword.trim() !== "";
+
   return (
     <div
       className="
@@ -104,6 +104,7 @@ const SignUpPage = () => {
           onSubmit={handleSubmit}
           error={error}
           loading={loading}
+          isFormValid={isFormValid}
         />
       </div>
 

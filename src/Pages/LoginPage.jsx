@@ -2,11 +2,16 @@ import React, { useState } from "react";
 import AuthForm from "../Auth/AuthForm";
 import image from "../assets/logo/logo.png";
 import { loginInitialState } from "../Data/FormData";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../Services/authService";
+import { useAuth } from "../Context/AuthContext";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState(loginInitialState);
-
-  console.log(formData);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleChange = (event) => {
     setFormData({
@@ -15,12 +20,34 @@ const LoginPage = () => {
     });
   };
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   // Handle form submission logic here
-  // };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setError("");
+    setLoading(true);
 
-  console.log(formData);
+    try {
+      const response = await loginUser({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      console.log("login successful", response);
+
+      login(response.data, response.token);
+
+      navigate("/");
+    } catch (error) {
+      console.error("login failed", error);
+      setError(
+        error.response?.data?.message || "Login failed. Please try again.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const isFormValid =
+    formData.email.trim() !== "" && formData.password.trim() !== "";
 
   return (
     <div
@@ -43,6 +70,10 @@ const LoginPage = () => {
           nameFive="password"
           valueFive={formData.password}
           onChangeFive={handleChange}
+          onSubmit={handleSubmit}
+          error={error}
+          loading={loading}
+          isFormValid={isFormValid}
         />
       </div>
     </div>
