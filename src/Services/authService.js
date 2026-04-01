@@ -1,4 +1,8 @@
-import api from "./Api";
+// import api from "./Api";
+
+import api from "./api";
+
+// import api from "./Api";
 
 // POST /api/auth/register
 export const registerUser = async (userData) => {
