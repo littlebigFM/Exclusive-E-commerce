@@ -30,12 +30,12 @@ const Navbar = () => {
         <p>
           Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%!
         </p>
-        <Link
+        {/* <Link
           className="text-[16px] font-medium underline underline-offset-4 hover:text-[#DB4444] transition-colors w-fit"
           to="/"
         >
           Shop now
-        </Link>
+        </Link> */}
       </nav>
 
       {/* ── Main header ── */}
