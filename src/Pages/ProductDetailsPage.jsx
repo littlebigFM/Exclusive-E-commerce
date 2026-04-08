@@ -1,17 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Heart, Truck, RotateCcw, Minus, Plus } from "lucide-react";
-// import { useApp } from "../Context/AppContext";
-// import StarRating from "../Components/ui/StarRating";
-import { flashSaleProducts, bestSellingProducts } from "../Data/Product.js";
 import StarRating from "../Components/UI/StarRating";
 import { useApp } from "../Context/AppContext";
 import { motion } from "framer-motion";
-import ProductCard from "../Components/UI/ProductCard.jsx";
+import { getProductById } from "../Services/productService";
 
-// 🔌 BACKEND: replace with GET /api/products/:id
-const allProducts = [...flashSaleProducts, ...bestSellingProducts];
-
+// ── Animation Variants ──────────────────────────────────────
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
@@ -36,22 +31,67 @@ const ProductDetailsPage = () => {
   const { id } = useParams();
   const { addToCart, toggleWishlist, isInWishlist } = useApp();
 
-  // 🔌 BACKEND: replace with GET /api/products/:id
-  const product = allProducts.find((p) => p.id === Number(id));
-
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState(0);
   const [selectedSize, setSelectedSize] = useState(0);
   const [activeThumb, setActiveThumb] = useState(0);
 
+  useEffect(() => {
+    const loadProduct = async () => {
+      setLoading(true);
+      setFetchError(false);
+
+      if (!id) {
+        setLoading(false);
+        setFetchError(true);
+        return;
+      }
+
+      try {
+        const response = await getProductById(id);
+        // response is { success, message, data }
+        // we need response.data for the actual product
+        setProduct(response.data);
+      } catch (error) {
+        console.error("Failed to fetch product:", error);
+        setFetchError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProduct();
+  }, [id]);
+
   const inWishlist = product ? isInWishlist(product.id) : false;
 
-  // Related products — same category, excluding current
-  const relatedProducts = allProducts
-    .filter((p) => p.category === product?.category && p.id !== product?.id)
-    .slice(0, 4);
+  // 🔌 BACKEND: replace with GET /api/products?category_id=${product.category_id}
+  const relatedProducts = [];
 
-  if (!product) {
+  const handleAddToCart = () => {
+    for (let i = 0; i < quantity; i++) {
+      addToCart(product);
+    }
+  };
+
+  // Product image with fallback
+  const productImage = product?.primary_image || "/images/placeholder.png";
+
+  if (loading) {
+    return (
+      <div className="w-full flex items-center justify-center min-h-[400px]">
+        <div className="flex flex-col items-center gap-[16px]">
+          <div className="w-[40px] h-[40px] border-4 border-[#DB4444] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[16px] text-black/50">Loading product...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!product || fetchError) {
     return (
       <div className="max-w-[1200px] mx-auto px-4 py-[80px] text-center">
         <p className="text-[24px] font-medium text-black">Product not found.</p>
@@ -65,12 +105,6 @@ const ProductDetailsPage = () => {
     );
   }
 
-  const handleAddToCart = () => {
-    for (let i = 0; i < quantity; i++) {
-      addToCart(product);
-    }
-  };
-
   return (
     <div className="w-full bg-white">
       <div className="max-w-[1440px] mx-auto px-4 py-[40px] md:py-[80px]">
@@ -82,12 +116,11 @@ const ProductDetailsPage = () => {
           className="flex items-center gap-[8px] text-[14px] text-black/50 mb-[40px] md:mb-[80px] flex-wrap"
         >
           <Link to="/" className="hover:text-black transition-colors">
-            Account
+            Home
           </Link>
           <span>/</span>
-          <Link to="/" className="hover:text-black transition-colors">
-            {product.category}
-          </Link>
+          <span className="text-black/50">Category {product.category_id}</span>
+          {/* 🔌 BACKEND: replace category_id with category name when API returns it */}
           <span>/</span>
           <span className="text-black">{product.name}</span>
         </motion.div>
@@ -115,9 +148,9 @@ const ProductDetailsPage = () => {
                   }`}
                 >
                   <img
-                    src={product.image}
+                    src={productImage}
                     alt={product.name}
-                    className="w-[70px] h-[70px] object-cntain"
+                    className="w-[70px] h-[70px] object-contain"
                   />
                 </button>
               ))}
@@ -126,7 +159,7 @@ const ProductDetailsPage = () => {
             {/* Main image */}
             <div className="flex-1 bg-[#F5F5F5] rounded-[4px] flex items-center justify-center min-h-[300px] sm:min-h-[500px] p-[24px]">
               <img
-                src={product.image}
+                src={productImage}
                 alt={product.name}
                 className="w-full max-w-[400px] h-[300px] sm:h-[400px] object-contain"
               />
@@ -148,13 +181,18 @@ const ProductDetailsPage = () => {
 
             {/* Rating + In Stock */}
             <div className="flex items-center gap-[16px] flex-wrap">
-              <StarRating rating={product.rating} reviews={product.reviews} />
-              <span className="text-[14px] text-[#00FF66]">In Stock</span>
+              <StarRating
+                rating={product.avg_rating || 0}
+                reviews={product.review_count || 0}
+              />
+              <span className="text-[14px] text-[#00FF66]">
+                {product.stock_label || "In Stock"}
+              </span>
             </div>
 
             {/* Price */}
             <p className="text-[24px] text-black font-normal">
-              ${product.price}
+              ₦{product.price?.toLocaleString()}
             </p>
 
             {/* Divider */}
@@ -162,9 +200,9 @@ const ProductDetailsPage = () => {
 
             {/* Description */}
             <p className="text-[14px] text-black/70 leading-[21px]">
-              {product.name} — High quality product with premium materials.
-              Designed for comfort and durability.
-              {/* 🔌 BACKEND: replace with product.description from API */}
+              {product.description ||
+                product.short_description ||
+                "High quality product with premium materials."}
             </p>
 
             {/* Divider */}
@@ -293,6 +331,7 @@ const ProductDetailsPage = () => {
         </div>
 
         {/* ── Related Products ── */}
+        {/* 🔌 BACKEND: GET /api/products?category_id=${product.category_id} */}
         {relatedProducts.length > 0 && (
           <motion.section
             variants={fadeUp}
@@ -300,15 +339,12 @@ const ProductDetailsPage = () => {
             whileInView="visible"
             viewport={viewport}
           >
-            {/* Section header */}
             <div className="flex items-center gap-[16px] mb-[24px]">
               <div className="w-[20px] h-[40px] bg-[#DB4444] rounded-[4px]" />
               <span className="text-[#DB4444] font-semibold text-[16px]">
                 Related Item
               </span>
             </div>
-
-            {/* Products grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-[30px]">
               {relatedProducts.map((p) => (
                 <ProductCard key={p.id} product={p} />

@@ -39,6 +39,7 @@ const SignUpPage = () => {
         phone: formData.phone,
         email: formData.email,
         password: formData.password,
+        confirm_password: formData.confirmPassword,
         role: "user",
       });
 

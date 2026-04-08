@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AuthForm from "../Auth/AuthForm";
 import image from "../assets/logo/logo.png";
 import { loginInitialState } from "../Data/FormData";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { loginUser } from "../Services/authService";
 import { useAuth } from "../Context/AuthContext";
 
@@ -10,8 +10,13 @@ const LoginPage = () => {
   const [formData, setFormData] = useState(loginInitialState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
   const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  // Check if user was redirected from somewhere
+  // If yes — send them back there after login
+  // If no — send them to homepage
+  const from = location.state?.from?.pathname || "/";
 
   const handleChange = (event) => {
     setFormData({
@@ -35,7 +40,9 @@ const LoginPage = () => {
 
       login(response.data, response.token);
 
-      navigate("/");
+      navigate(from, { replace: true });
+
+      // navigate("/");
     } catch (error) {
       console.error("login failed", error);
       setError(

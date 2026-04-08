@@ -1,7 +1,13 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { getProfile } from "../Services/authService";
 
-const AuthContext = createContext();
+const AuthContext = createContext({
+  user: null,
+  loading: true,
+  login: () => {},
+  logout: () => {},
+  isLoggedIn: false,
+});
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -49,6 +55,8 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("cart");
+    localStorage.removeItem("wishlist");
     setUser(null);
   };
 

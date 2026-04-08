@@ -73,7 +73,7 @@ const CartPage = () => {
 
                   {/* Price */}
                   <p className="text-[16px] text-black text-center">
-                    ${item.price}
+                    #{item.price}
                   </p>
 
                   {/* Quantity */}
@@ -103,7 +103,7 @@ const CartPage = () => {
 
                   {/* Subtotal */}
                   <p className="text-[16px] font-medium text-black text-end">
-                    ${(item.price * item.quantity).toLocaleString()}
+                    #{(item.price * item.quantity).toLocaleString()}
                   </p>
                 </div>
               ))}
@@ -137,7 +137,7 @@ const CartPage = () => {
                       </button>
                     </div>
                     <p className="text-[14px] text-[#DB4444] font-medium">
-                      ${item.price}
+                      #{item.price}
                     </p>
 
                     {/* Quantity + Subtotal row */}
@@ -164,7 +164,7 @@ const CartPage = () => {
                         </button>
                       </div>
                       <p className="text-[14px] font-medium text-black">
-                        ${(item.price * item.quantity).toLocaleString()}
+                        #{(item.price * item.quantity).toLocaleString()}
                       </p>
                     </div>
                   </div>
@@ -209,7 +209,7 @@ const CartPage = () => {
                 <div className="flex items-center justify-between py-[16px] border-b border-black/10">
                   <span className="text-[16px] text-black">Subtotal:</span>
                   <span className="text-[16px] text-black">
-                    ${cartTotal.toLocaleString()}
+                    #{cartTotal.toLocaleString()}
                   </span>
                 </div>
 
@@ -223,7 +223,7 @@ const CartPage = () => {
                 <div className="flex items-center justify-between py-[16px]">
                   <span className="text-[16px] text-black">Total:</span>
                   <span className="text-[16px] font-medium text-black">
-                    ${cartTotal.toLocaleString()}
+                    #{cartTotal.toLocaleString()}
                   </span>
                 </div>
 

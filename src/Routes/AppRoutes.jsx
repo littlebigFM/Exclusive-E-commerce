@@ -10,6 +10,7 @@ import SignUpPage from "../Pages/SignUpPage";
 import LoginPage from "../Pages/LoginPage";
 import CheckoutPage from "../Pages/CheckoutPage";
 import ProductDetailsPage from "../Pages/ProductDetailsPage";
+import ProtectedRoute from "./ProtectedRoute";
 
 const AppRoutes = () => {
   return (
@@ -17,14 +18,32 @@ const AppRoutes = () => {
       <Route path="/" element={<HomePage />} />
       <Route path="/cart" element={<CartPage />} />
       <Route path="/wishlist" element={<WishlistPage />} />
-      <Route path="/account" element={<AccountPage />} />
+      {/* <Route path="/account" element={<AccountPage />} /> */}
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/sign-up" element={<SignUpPage />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/checkout" element={<CheckoutPage />} />
+      {/* <Route path="/checkout" element={<CheckoutPage />} /> */}
       <Route path="/product/:id" element={<ProductDetailsPage />} />
       {/* <Route path="/success" element={<SuccessPage */}
+
+      {/* Protected Routes */}
+      <Route
+        path="/checkout"
+        element={
+          <ProtectedRoute>
+            <CheckoutPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/account"
+        element={
+          <ProtectedRoute>
+            <AccountPage />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 };

@@ -3,10 +3,13 @@ import { Link } from "react-router-dom";
 import { TbCurrencyDollar } from "react-icons/tb";
 import { PiShoppingBagOpenBold } from "react-icons/pi";
 import { MdOutlinePeopleAlt } from "react-icons/md";
-import { BsHandbag } from "react-icons/bs";
+import { BsHandbag, BsTwitterX } from "react-icons/bs";
 import { motion } from "framer-motion";
 import ServicesStrip from "../Components/UI/ServiceTrip/ServicesStrip";
 import img1 from "../assets/images/sideimage.png";
+import { BiLogoFacebook } from "react-icons/bi";
+import { FaInstagram } from "react-icons/fa";
+import { TfiLinkedin } from "react-icons/tfi";
 
 // ── Animation Variants ──────────────────────────────────────
 const fadeUp = {
@@ -79,24 +82,39 @@ const stats = [
 const team = [
   {
     id: 1,
-    name: "Tom Cruise",
+    name: "Tobi Daniel",
     role: "Founder & Chairman",
-    image: "/images/team-1.png",
-    socials: ["𝕏", "in", "📷"],
+    image: "/Images/manOne.png",
+    socials: [
+      <BiLogoFacebook />,
+      <BsTwitterX />,
+      <FaInstagram />,
+      <TfiLinkedin />,
+    ],
   },
   {
     id: 2,
-    name: "Emma Watson",
+    name: "Femi Matthew",
     role: "Managing Director",
-    image: "/images/team-2.png",
-    socials: ["𝕏", "in", "📷"],
+    image: "/Images/manTwo.png",
+    socials: [
+      <BiLogoFacebook />,
+      <BsTwitterX />,
+      <FaInstagram />,
+      <TfiLinkedin />,
+    ],
   },
   {
     id: 3,
-    name: "Will Smith",
+    name: "Cynthia Ofori",
     role: "Product Designer",
-    image: "/images/team-3.png",
-    socials: ["𝕏", "in", "📷"],
+    image: "/Images/woman.png",
+    socials: [
+      <BiLogoFacebook />,
+      <BsTwitterX />,
+      <FaInstagram />,
+      <TfiLinkedin />,
+    ],
   },
 ];
 
@@ -259,7 +277,7 @@ const AboutPage = () => {
                     <a
                       key={i}
                       href="#"
-                      className="text-[20px] text-black hover:text-[#DB4444] transition-colors"
+                      className="text-[17px] text-black hover:text-[#DB4444] transition-colors"
                     >
                       {icon}
                     </a>

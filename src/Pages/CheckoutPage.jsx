@@ -191,7 +191,7 @@ const CheckoutPage = () => {
                       <p className="text-[16px] text-black">{item.name}</p>
                     </div>
                     <p className="text-[16px] text-black shrink-0">
-                      ${(item.price * item.quantity).toLocaleString()}
+                      #{(item.price * item.quantity).toLocaleString()}
                     </p>
                   </div>
                 ))}
@@ -202,7 +202,7 @@ const CheckoutPage = () => {
               <div className="flex items-center justify-between">
                 <span className="text-[16px] text-black">Subtotal:</span>
                 <span className="text-[16px] text-black">
-                  ${cartTotal.toLocaleString()}
+                  #{cartTotal.toLocaleString()}
                 </span>
               </div>
 
@@ -220,7 +220,7 @@ const CheckoutPage = () => {
                   Total:
                 </span>
                 <span className="text-[16px] font-medium text-black">
-                  ${cartTotal.toLocaleString()}
+                  #{cartTotal.toLocaleString()}
                 </span>
               </div>
 
