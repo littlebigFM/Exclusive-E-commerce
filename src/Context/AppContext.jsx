@@ -65,6 +65,10 @@ export function AppProvider({ children }) {
         }
       } catch (error) {
         console.error("Failed to fetch cart:", error);
+        if (error.response?.status === 401) {
+          console.warn("Session expired or invalid. Using local cart storage.");
+        }
+        // Keep the localStorage cart as fallback
       }
     };
     fetchCart();
@@ -100,6 +104,23 @@ export function AppProvider({ children }) {
         });
       } catch (error) {
         console.error("Failed to add to cart:", error);
+        // If 401 Unauthorized, fall back to localStorage
+        if (error.response?.status === 401) {
+          console.warn(
+            "Session expired. Saving to local storage. Please log in again.",
+          );
+          setCart((prev) => {
+            const existing = prev.find((item) => item.id === product.id);
+            if (existing) {
+              return prev.map((item) =>
+                item.id === product.id
+                  ? { ...item, quantity: item.quantity + 1 }
+                  : item,
+              );
+            }
+            return [...prev, { ...product, quantity: 1 }];
+          });
+        }
       }
     } else {
       setCart((prev) => {
@@ -125,6 +146,9 @@ export function AppProvider({ children }) {
         }
       } catch (error) {
         console.error("Failed to remove from cart:", error);
+        if (error.response?.status === 401) {
+          console.warn("Session expired. Saving to local storage.");
+        }
       }
     }
     setCart((prev) => prev.filter((item) => item.id !== id));
@@ -140,6 +164,9 @@ export function AppProvider({ children }) {
         }
       } catch (error) {
         console.error("Failed to update cart:", error);
+        if (error.response?.status === 401) {
+          console.warn("Session expired. Saving to local storage.");
+        }
       }
     }
     setCart((prev) =>
