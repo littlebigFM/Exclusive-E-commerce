@@ -10,6 +10,9 @@ import SignUpPage from "../Pages/SignUpPage";
 import LoginPage from "../Pages/LoginPage";
 import CheckoutPage from "../Pages/CheckoutPage";
 import ProductDetailsPage from "../Pages/ProductDetailsPage";
+import PrivacyPolicyPage from "../Pages/PrivacyPolicyPage";
+import TermsOfUsePage from "../Pages/TermsOfUsePage";
+import FAQPage from "../Pages/FAQPage";
 import ProtectedRoute from "./ProtectedRoute";
 
 const AppRoutes = () => {
@@ -21,6 +24,9 @@ const AppRoutes = () => {
       {/* <Route path="/account" element={<AccountPage />} /> */}
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/about" element={<AboutPage />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+      <Route path="/terms-of-use" element={<TermsOfUsePage />} />
+      <Route path="/faq" element={<FAQPage />} />
       <Route path="/sign-up" element={<SignUpPage />} />
       <Route path="/login" element={<LoginPage />} />
       {/* <Route path="/checkout" element={<CheckoutPage />} /> */}

@@ -8,6 +8,7 @@ import { BiLogoFacebook } from "react-icons/bi";
 import { BsTwitterX } from "react-icons/bs";
 import { FaInstagram } from "react-icons/fa";
 import { TfiLinkedin } from "react-icons/tfi";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const accountLinks = [
@@ -18,7 +19,12 @@ const Footer = () => {
     "Shop",
   ];
 
-  const quickLinks = ["Privacy Policy", "Terms Of Use", "FAQ", "Contact"];
+  const quickLinks = [
+    { label: "Privacy Policy", path: "/privacy-policy" },
+    { label: "Terms Of Use", path: "/terms-of-use" },
+    { label: "FAQ", path: "/faq" },
+    { label: "Contact", path: "/contact" },
+  ];
 
   return (
     <footer className="bg-black text-white mt-[80px]">
@@ -75,13 +81,13 @@ const Footer = () => {
           <h4 className="text-[20px] font-medium">Quick Link</h4>
           <div className="flex flex-col gap-[16px]">
             {quickLinks.map((link) => (
-              <a
-                key={link}
-                href="#"
+              <Link
+                key={link.label}
+                to={link.path}
                 className="text-[14px] text-white/70 hover:text-white transition-colors"
               >
-                {link}
-              </a>
+                {link.label}
+              </Link>
             ))}
           </div>
         </div>

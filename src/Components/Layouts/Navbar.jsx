@@ -26,8 +26,16 @@ const Navbar = () => {
   return (
     <div>
       {/* ── Top announcement bar ── */}
-      <nav className="flex items-center justify-center bg-black py-[8px] text-[#FAFAFA] font-regular text-[9px] min-[600px]:text-[12px] min-[800px]:text-[14px]">
-        Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%!
+      <nav className="flex gap-2 items-center justify-center bg-black py-[8px] text-[#FAFAFA] font-regular text-[9px] min-[600px]:text-[12px] min-[800px]:text-[14px]">
+        <p>
+          Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%!
+        </p>
+        <Link
+          className="text-[16px] font-medium underline underline-offset-4 hover:text-[#DB4444] transition-colors w-fit"
+          to="/"
+        >
+          Shop now
+        </Link>
       </nav>
 
       {/* ── Main header ── */}

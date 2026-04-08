@@ -33,7 +33,6 @@ const CheckoutPage = () => {
   return (
     <div className="w-full bg-white">
       <div className="max-w-[1440px] mx-auto px-4 py-[40px] md:py-[80px]">
-        {/* Breadcrumb */}
         <div className="flex items-center gap-[8px] text-[14px] text-black/50 mb-[40px] md:mb-[80px]">
           <Link to="/" className="hover:text-black transition-colors">
             Home
@@ -48,11 +47,9 @@ const CheckoutPage = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col lg:flex-row gap-[40px] lg:gap-[80px] items-start">
-            {/* ── Left — Billing Details ── */}
             <div className="w-full lg:w-[60%] flex flex-col gap-[32px]">
               <h2 className="text-[36px] font-medium">Billing Details</h2>
 
-              {/* First Name */}
               <div className="flex flex-col gap-[8px]">
                 <label className="text-[16px] text-black/60 font-medium">
                   First Name <span className="text-[#DB4444]">*</span>
@@ -67,7 +64,6 @@ const CheckoutPage = () => {
                 />
               </div>
 
-              {/* Company Name */}
               <div className="flex flex-col gap-[8px]">
                 <label className="text-[16px] text-black/60 font-medium">
                   Company Name
@@ -81,7 +77,6 @@ const CheckoutPage = () => {
                 />
               </div>
 
-              {/* Street Address */}
               <div className="flex flex-col gap-[8px]">
                 <label className="text-[16px] text-black/60 font-medium">
                   Street Address <span className="text-[#DB4444]">*</span>
@@ -96,7 +91,6 @@ const CheckoutPage = () => {
                 />
               </div>
 
-              {/* Apartment */}
               <div className="flex flex-col gap-[8px]">
                 <label className="text-[16px] text-black/60 font-medium">
                   Apartment, floor, etc. (optional)
@@ -110,7 +104,6 @@ const CheckoutPage = () => {
                 />
               </div>
 
-              {/* Town/City */}
               <div className="flex flex-col gap-[8px]">
                 <label className="text-[16px] text-black/60 font-medium">
                   Town/City <span className="text-[#DB4444]">*</span>
@@ -125,7 +118,6 @@ const CheckoutPage = () => {
                 />
               </div>
 
-              {/* Phone Number */}
               <div className="flex flex-col gap-[8px]">
                 <label className="text-[16px] text-black/60 font-medium">
                   Phone Number <span className="text-[#DB4444]">*</span>
@@ -140,7 +132,6 @@ const CheckoutPage = () => {
                 />
               </div>
 
-              {/* Email */}
               <div className="flex flex-col gap-[8px]">
                 <label className="text-[16px] text-black/60 font-medium">
                   Email Address <span className="text-[#DB4444]">*</span>
@@ -155,7 +146,6 @@ const CheckoutPage = () => {
                 />
               </div>
 
-              {/* Save info checkbox */}
               <div className="flex items-center gap-[16px]">
                 <input
                   type="checkbox"
@@ -174,7 +164,6 @@ const CheckoutPage = () => {
               </div>
             </div>
 
-            {/* ── Right — Order Summary ── */}
             <div className="w-full lg:w-[40%] flex flex-col gap-[32px]">
               <div className="flex flex-col gap-[24px]">
                 {cart.map((item) => (

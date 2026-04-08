@@ -197,7 +197,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* ── Browse by Category ── */}
       <section className="w-full border-b border-black/10">
         <div className="max-w-[1440px] mx-auto px-4 py-[60px]">
           <SectionHeader tag="Categories" title="Browse By Category" />
@@ -267,7 +266,6 @@ const HomePage = () => {
           <div className="max-w-[1440px] mx-auto px-4 py-[60px]">
             <SectionHeader tag="Featured" title="New Arrival" />
             <div className="flex flex-col min-[600px]:grid min-[600px]:grid-cols-2 gap-[30px] mt-[40px]">
-              {/* Large left card */}
               <div className="h-[600px] bg-black rounded-[4px] relative overflow-hidden flex items-end p-[32px]">
                 <img
                   src={products[0]?.primary_image || "/images/placeholder.png"}
@@ -291,7 +289,6 @@ const HomePage = () => {
               </div>
 
               <div className="flex flex-col gap-[30px]">
-                {/* Top right card */}
                 <div className="h-[285px] bg-black rounded-[4px] relative overflow-hidden flex items-end p-[24px]">
                   <img
                     src={
@@ -316,7 +313,6 @@ const HomePage = () => {
                   </div>
                 </div>
 
-                {/* Bottom two cards */}
                 <div className="flex flex-col min-[600px]:grid min-[600px]:grid-cols-2 gap-[15px]">
                   {products.slice(2, 4).map((product) => (
                     <div

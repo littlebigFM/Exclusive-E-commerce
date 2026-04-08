@@ -34,7 +34,6 @@ const fadeRight = {
 
 const viewport = { once: true, amount: 0.2 };
 
-// ── Component ───────────────────────────────────────────────
 const ContactPage = () => {
   const [formData, setFormData] = useState(contactInitialState);
 
