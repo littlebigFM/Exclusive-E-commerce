@@ -60,13 +60,13 @@ const SignUpPage = () => {
     }
   };
 
-  const isFormValid =
-    formData.firstName.trim() !== "" &&
-    formData.lastName.trim() !== "" &&
-    formData.phone.trim() !== "" &&
-    formData.email.trim() !== "" &&
-    formData.password.trim() !== "" &&
-    formData.confirmPassword.trim() !== "";
+  // const isFormValid =
+  //   formData.firstName.trim() !== "" &&
+  //   formData.lastName.trim() !== "" &&
+  //   formData.phone.trim() !== "" &&
+  //   formData.email.trim() !== "" &&
+  //   formData.password.trim() !== "" &&
+  //   formData.confirmPassword.trim() !== "";
 
   return (
     <div
@@ -105,7 +105,7 @@ const SignUpPage = () => {
           onSubmit={handleSubmit}
           error={error}
           loading={loading}
-          isFormValid={isFormValid}
+          // isFormValid={isFormValid}
         />
       </div>
 

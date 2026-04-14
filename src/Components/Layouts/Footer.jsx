@@ -12,11 +12,11 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   const accountLinks = [
-    "My Account",
-    "Login / Register",
-    "Cart",
-    "Wishlist",
-    "Shop",
+    { label: "My Account", path: "/account" },
+    { label: "Login / Register", path: "/login" },
+    { label: "Cart", path: "/cart" },
+    { label: "Wishlist", path: "/wishlist" },
+    { label: "Shop", path: "/" },
   ];
 
   const quickLinks = [
@@ -66,13 +66,13 @@ const Footer = () => {
           <h4 className="text-[20px] font-medium">Account</h4>
           <div className="flex flex-col gap-[16px]">
             {accountLinks.map((link) => (
-              <a
-                key={link}
-                href="#"
+              <Link
+                key={link.label}
+                to={link.path}
                 className="text-[14px] text-white/70 hover:text-white transition-colors"
               >
-                {link}
-              </a>
+                {link.label}
+              </Link>
             ))}
           </div>
         </div>

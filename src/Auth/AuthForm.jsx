@@ -28,7 +28,6 @@ const AuthForm = ({
   onSubmit,
   error,
   loading,
-  isFormValid,
 }) => {
   const navigate = useNavigate();
 
@@ -70,9 +69,8 @@ const AuthForm = ({
           <div className="flex flex-col gap-4">
             <Button
               text={loading ? "Logging in..." : "Log In"}
-              disabled={!isFormValid}
+              // disabled={!isFormValid}
               type="submit"
-              // onClick={onSubmit}
               className="w-[370px] max-[400px]:w-[300px] max-[330px]:w-full"
             />
 
@@ -152,9 +150,8 @@ const AuthForm = ({
           <div className="flex flex-col gap-4">
             <Button
               type="submit"
-              disabled={!isFormValid}
+              // disabled={!isFormValid}
               text={loading ? "Creating Account..." : "Create Account"}
-              // onClick={onSubmit}
               className="w-[370px] max-[400px]:w-[300px] max-[330px]:w-full "
             />
 

@@ -14,6 +14,11 @@ import PrivacyPolicyPage from "../Pages/PrivacyPolicyPage";
 import TermsOfUsePage from "../Pages/TermsOfUsePage";
 import FAQPage from "../Pages/FAQPage";
 import ProtectedRoute from "./ProtectedRoute";
+import AdminLayout from "../Admin/AdminLayout";
+import AdminDashboard from "../Admin/AdminDashboard";
+import AdminProducts from "../Admin/Products/AdminProducts";
+import AddProduct from "../Admin/Products/AddProduct";
+import EditProduct from "../Admin/Products/EditProduct";
 
 const AppRoutes = () => {
   return (
@@ -47,6 +52,51 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <AccountPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Admin Routes */}
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute adminOnly>
+            <AdminLayout>
+              <AdminDashboard />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/products"
+        element={
+          <ProtectedRoute adminOnly>
+            <AdminLayout>
+              <AdminProducts />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/products/add"
+        element={
+          <ProtectedRoute adminOnly>
+            <AdminLayout>
+              <AddProduct />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/products/edit/:id"
+        element={
+          <ProtectedRoute adminOnly>
+            <AdminLayout>
+              <EditProduct />
+            </AdminLayout>
           </ProtectedRoute>
         }
       />

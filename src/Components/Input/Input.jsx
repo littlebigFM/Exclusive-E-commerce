@@ -9,7 +9,8 @@ const Input = ({ type, value, onChange, name, placeholder, disabled }) => {
         onChange={onChange}
         name={name}
         placeholder={placeholder}
-        disabled={disabled}
+        // disabled={disabled}
+        required
         className="w-full  border-b-[2px] outline-none border-gray-300 py-2 placeholder:text-[16px]"
       />
     </div>

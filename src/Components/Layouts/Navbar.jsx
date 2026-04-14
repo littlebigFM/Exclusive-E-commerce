@@ -8,6 +8,7 @@ import {
   Menu,
   X,
   LogOut,
+  Settings,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -16,12 +17,11 @@ import { useAuth } from "../../Context/AuthContext";
 const Navbar = () => {
   const { cartCount, wishlistCount } = useApp();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [accountModal, setAccountModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { user, logout, isLoggedIn } = useAuth();
 
   const navLinks = ["Home", "Contact", "About"];
-  // Removed "Sign Up" from navLinks because once a user is logged in
-  // we don't want to show Sign Up anymore — we show their name instead
 
   return (
     <div>
@@ -38,10 +38,8 @@ const Navbar = () => {
         </Link> */}
       </nav>
 
-      {/* ── Main header ── */}
       <header className="w-full border-b border-black/10 bg-white sticky top-0 z-50">
         <div className="max-w-[1440px] mx-auto px-4 h-[80px] flex items-center justify-between gap-8 max-[890px]:gap-4">
-          {/* Logo */}
           <Link to="/" className="font-bold text-[24px] text-black shrink-0">
             Exclusive
           </Link>
@@ -118,26 +116,72 @@ const Navbar = () => {
               )}
             </Link>
 
-            {/* User section — shows differently based on login status */}
             {isLoggedIn ? (
-              // Logged in — show first name + logout button
-              <div className="flex items-center gap-[12px]">
-                <Link
-                  to="/account"
-                  className="text-[14px] font-medium text-black hover:text-[#DB4444] transition-colors"
-                >
-                  {user?.first_name}
-                </Link>
+              <div className="flex items-center gap-[12px] relative">
                 <button
-                  onClick={logout}
-                  title="Logout"
+                  onClick={() => setAccountModal(!accountModal)}
                   className="p-1 cursor-pointer"
                 >
-                  <LogOut
-                    size={20}
+                  <User
+                    size={22}
                     className="text-black hover:text-[#DB4444] transition-colors"
                   />
                 </button>
+
+                {/* Animated Account Dropdown */}
+                <AnimatePresence>
+                  {accountModal && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                      transition={{ duration: 0.2, ease: "easeInOut" }}
+                      className="
+                        w-[220px] 
+                        flex flex-col
+                        gap-3 p-4
+                        rounded-[4px]
+                        bg-gradient-to-b from-black to-black-700/100 backdrop-blur-[150px] shadow-lg
+                        absolute top-full right-0 mt-2
+                        z-50
+                      "
+                    >
+                      <Link
+                        to="/account"
+                        onClick={() => setAccountModal(false)}
+                        className="
+                          flex items-center gap-3
+                          py-2
+                          rounded-[4px]
+                          text-[14px] text-white
+                          transition-colors
+                        "
+                      >
+                        <Settings size={18} className="text-white" />
+                        <span>Manage My Account</span>
+                      </Link>
+
+                      <button
+                        onClick={() => {
+                          logout();
+                          setAccountModal(false);
+                        }}
+                        className="
+                          flex items-center gap-3
+                          py-2
+                          rounded-[4px]
+                          text-[14px] text-white
+                          transition-colors
+                          w-full text-left
+                          cursor-pointer
+                        "
+                      >
+                        <LogOut size={18} className="text-white" />
+                        <span>Logout</span>
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             ) : (
               // Not logged in — show user icon linking to login
@@ -243,7 +287,8 @@ const Navbar = () => {
                         onClick={() => setMenuOpen(false)}
                         className="text-[14px] font-medium text-black hover:text-[#DB4444] transition-colors"
                       >
-                        {user?.first_name}
+                        {/* {user?.first_name} */}
+                        <User size={23} />
                       </Link>
                       <button
                         onClick={() => {
