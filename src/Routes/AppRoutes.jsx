@@ -19,6 +19,7 @@ import AdminDashboard from "../Admin/AdminDashboard";
 import AdminProducts from "../Admin/Products/AdminProducts";
 import AddProduct from "../Admin/Products/AddProduct";
 import EditProduct from "../Admin/Products/EditProduct";
+import AdminLoginPage from "../Admin/AdminLoginPage";
 
 const AppRoutes = () => {
   return (
@@ -37,6 +38,7 @@ const AppRoutes = () => {
       {/* <Route path="/checkout" element={<CheckoutPage />} /> */}
       <Route path="/product/:id" element={<ProductDetailsPage />} />
       {/* <Route path="/success" element={<SuccessPage */}
+      <Route path="/admin/login" element={<AdminLoginPage />} />
 
       {/* Protected Routes */}
       <Route

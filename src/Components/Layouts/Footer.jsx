@@ -1,7 +1,6 @@
 import React from "react";
 import { Send } from "lucide-react";
 import qrCode from "../../assets/Qrcode.png";
-
 import playstore from "../../assets/GooglePlay.png";
 import appstore from "../../assets/AppStore.png";
 import { BiLogoFacebook } from "react-icons/bi";

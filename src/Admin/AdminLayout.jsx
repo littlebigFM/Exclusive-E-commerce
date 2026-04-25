@@ -9,6 +9,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useAuth } from "../Context/AuthContext";
+import { useAdmin } from "../Context/AdminContext";
 
 const navItems = [
   { label: "Dashboard", icon: LayoutDashboard, path: "/admin" },
@@ -21,9 +22,16 @@ const AdminLayout = ({ children }) => {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // const handleLogout = () => {
+  //   logout();
+  //   navigate("/login");
+  // };
+
+  const { admin, logoutAdmin } = useAdmin();
+
   const handleLogout = () => {
-    logout();
-    navigate("/login");
+    logoutAdmin();
+    navigate("/admin/login");
   };
 
   return (
