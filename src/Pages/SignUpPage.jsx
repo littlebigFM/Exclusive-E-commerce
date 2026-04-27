@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, X } from "lucide-react";
 import { registerUser } from "../Services/authService";
+import { validatePassword } from "../Utils/passwordValidator";
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState(signUpInitialState);
@@ -25,6 +26,14 @@ const SignUpPage = () => {
     event.preventDefault();
     setError("");
 
+    // Check password strength
+    const { isValid } = validatePassword(formData.password);
+    if (!isValid) {
+      setError("Please create a stronger password that meets all requirements");
+      return;
+    }
+
+    // Check passwords match
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
       return;

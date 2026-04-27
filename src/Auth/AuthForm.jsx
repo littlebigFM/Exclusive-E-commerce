@@ -4,6 +4,7 @@ import Button from "../Components/UI/Button/Button";
 import GoogleButton from "../Components/UI/Button/GoogleButton";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
+import PasswordStrength from "../Components/UI/PasswordStrength";
 
 const AuthForm = ({
   type,
@@ -139,6 +140,9 @@ const AuthForm = ({
               value={valueFive}
               onChange={onChangeFive}
             />
+
+            <PasswordStrength password={valueFive} />
+
             <Input
               placeholder="Confirm Password"
               name={nameSix}
