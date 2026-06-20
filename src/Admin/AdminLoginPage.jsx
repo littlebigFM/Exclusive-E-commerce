@@ -34,9 +34,31 @@ const AdminLoginPage = () => {
       navigate("/admin");
     } catch (err) {
       console.error("Admin login failed:", err);
-      setError(
-        err.response?.data?.message || "Login failed. Please try again.",
-      );
+
+      // 1. Extract the specific error message from the backend response
+      const backendError = err.response?.data?.error;
+      const backendMessage = err.response?.data?.message;
+
+      // 2. Set a user-friendly message based on the status or specific error
+      if (err.response?.status === 500) {
+        // This handles the SQL/Foreign Key crash you just saw
+        setError(
+          "Internal server error. The admin logging system is currently unavailable.",
+        );
+      } else if (err.response?.status === 401) {
+        setError(
+          "Invalid admin credentials. Please check your email and password.",
+        );
+      } else if (err.response?.status === 403) {
+        setError("Access denied. You do not have admin privileges.");
+      } else {
+        // Fallback to backend message, then backend error, then a generic string
+        setError(
+          backendMessage ||
+            backendError ||
+            "Login failed. Please check your connection.",
+        );
+      }
     } finally {
       setLoading(false);
     }

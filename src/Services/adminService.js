@@ -2,7 +2,6 @@ import api from "./api";
 
 // ── Admin Auth ───────────────────────────────────────────────
 
-// POST /api/admin/login
 export const adminLogin = async (credentials) => {
   const response = await api.post("/api/admin/login", credentials);
   return response.data;
@@ -10,7 +9,6 @@ export const adminLogin = async (credentials) => {
 
 // ── Admin Dashboard ──────────────────────────────────────────
 
-// GET /api/admin/dashboard
 export const getDashboardStats = async () => {
   const response = await api.get("/api/admin/dashboard");
   return response.data;
@@ -18,7 +16,6 @@ export const getDashboardStats = async () => {
 
 // ── Admin Orders ─────────────────────────────────────────────
 
-// GET /api/admin/orders?page=1&limit=10
 export const getAdminOrders = async (page = 1, limit = 10) => {
   const response = await api.get(
     `/api/admin/orders?page=${page}&limit=${limit}`,
@@ -40,15 +37,23 @@ export const getProduct = async (id) => {
   return response.data;
 };
 
-// POST /api/products
-export const createProduct = async (productData) => {
-  const response = await api.post("/api/products", productData);
+// POST /api/products — multipart/form-data for image upload
+export const createProduct = async (formData) => {
+  const response = await api.post("/api/products", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return response.data;
 };
 
-// PUT /api/products/:id
-export const updateProduct = async (id, productData) => {
-  const response = await api.put(`/api/products/${id}`, productData);
+// PUT /api/products/:id — multipart/form-data for image upload
+export const updateProduct = async (id, formData) => {
+  const response = await api.put(`/api/products/${id}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return response.data;
 };
 

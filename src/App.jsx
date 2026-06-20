@@ -5,6 +5,7 @@ import { AppProvider } from "./Context/AppContext";
 import { AuthProvider } from "./Context/AuthContext";
 import AppRoutes from "./Routes/AppRoutes";
 import { AdminProvider } from "./Context/AdminContext";
+import ScrollToTop from "./Components/ScrollToTop"; // 🚀 Import it here
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
       <AdminProvider>
         <AppProvider>
           <Router>
+            <ScrollToTop />
             <div className="min-h-screen">
               <Navbar />
               <div className="">

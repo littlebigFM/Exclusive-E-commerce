@@ -20,6 +20,7 @@ import AdminProducts from "../Admin/Products/AdminProducts";
 import AddProduct from "../Admin/Products/AddProduct";
 import EditProduct from "../Admin/Products/EditProduct";
 import AdminLoginPage from "../Admin/AdminLoginPage";
+import AdminOrders from "../Admin/Orders/AdminOrders";
 
 const AppRoutes = () => {
   return (
@@ -54,6 +55,17 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <AccountPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/orders"
+        element={
+          <ProtectedRoute adminOnly>
+            <AdminLayout>
+              <AdminOrders />
+            </AdminLayout>
           </ProtectedRoute>
         }
       />

@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Package, TrendingUp, AlertCircle } from "lucide-react";
-import { getAllProducts } from "../Services/adminService";
 import { Link } from "react-router-dom";
+import { Package, ShoppingBag, TrendingUp, Clock } from "lucide-react";
+import { getDashboardStats } from "../Services/adminService";
 
 const AdminDashboard = () => {
-  const [products, setProducts] = useState([]);
+  const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetch = async () => {
       try {
-        const res = await getAllProducts();
-        setProducts(res.data || []);
+        const res = await getDashboardStats();
+        setStats(res.data);
       } catch (err) {
-        console.error("Failed to fetch products:", err);
+        console.error("Failed to fetch dashboard stats:", err);
+        setError("Failed to load dashboard");
       } finally {
         setLoading(false);
       }
@@ -21,180 +23,246 @@ const AdminDashboard = () => {
     fetch();
   }, []);
 
-  const totalProducts = products.length;
-  const inStock = products.filter((p) => p.stock > 0).length;
-  const outOfStock = products.filter((p) => p.stock === 0).length;
-  const flashSale = products.filter((p) => p.is_flash).length;
+  const statCards = stats
+    ? [
+        {
+          id: 1,
+          label: "Total Orders",
+          value: stats.total_orders,
+          icon: ShoppingBag,
+          color: "bg-blue-50 text-blue-600",
+        },
+        {
+          id: 2,
+          label: "Total Revenue",
+          value: `₦${Number(stats.total_revenue).toLocaleString()}`,
+          icon: TrendingUp,
+          color: "bg-green-50 text-green-600",
+        },
+        {
+          id: 3,
+          label: "Pending Orders",
+          value: stats.pending_orders,
+          icon: Clock,
+          color: "bg-orange-50 text-orange-600",
+        },
+        {
+          id: 4,
+          label: "Delivered Orders",
+          value: stats.delivered_orders,
+          icon: Package,
+          color: "bg-purple-50 text-purple-600",
+        },
+      ]
+    : [];
 
-  const stats = [
-    {
-      id: 1,
-      label: "Total Products",
-      value: totalProducts,
-      icon: Package,
-      color: "bg-blue-50 text-blue-600",
-    },
-    {
-      id: 2,
-      label: "In Stock",
-      value: inStock,
-      icon: TrendingUp,
-      color: "bg-green-50 text-green-600",
-    },
-    {
-      id: 3,
-      label: "Out of Stock",
-      value: outOfStock,
-      icon: AlertCircle,
-      color: "bg-red-50 text-[#DB4444]",
-    },
-    {
-      id: 4,
-      label: "Flash Sale",
-      value: flashSale,
-      icon: TrendingUp,
-      color: "bg-orange-50 text-orange-600",
-    },
-  ];
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="w-[40px] h-[40px] border-4 border-[#DB4444] border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <p className="text-[#DB4444] text-[16px]">{error}</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col gap-[32px]">
-      {/* Page title */}
+    <div className="flex flex-col gap-[24px]">
+      {/* Title */}
       <div>
-        <h1 className="text-[28px] font-bold text-black">Dashboard</h1>
-        <p className="text-[14px] text-black/50 mt-[4px]">
-          Welcome back! Here's what's happening in your store.
+        <h1 className="text-[24px] md:text-[28px] font-bold text-black">
+          Dashboard
+        </h1>
+        <p className="text-[13px] text-black/50 mt-[4px]">
+          Welcome back! Here's your store overview.
         </p>
       </div>
 
       {/* Stats grid */}
-      {loading ? (
-        <div className="flex items-center justify-center py-[60px]">
-          <div className="w-[40px] h-[40px] border-4 border-[#DB4444] border-t-transparent rounded-full animate-spin" />
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-[20px]">
-          {stats.map((stat) => {
-            const Icon = stat.icon;
-            return (
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-[16px]">
+        {statCards.map((stat) => {
+          const Icon = stat.icon;
+          return (
+            <div
+              key={stat.id}
+              className="bg-white rounded-[12px] p-[20px] md:p-[24px] flex flex-col gap-[16px] border border-black/5 shadow-sm"
+            >
               <div
-                key={stat.id}
-                className="bg-white rounded-[12px] p-[24px] flex flex-col gap-[16px] border border-black/5 shadow-sm"
+                className={`w-[44px] h-[44px] rounded-[10px] flex items-center justify-center ${stat.color}`}
               >
-                <div
-                  className={`w-[48px] h-[48px] rounded-[10px] flex items-center justify-center ${stat.color}`}
-                >
-                  <Icon size={22} />
-                </div>
-                <div>
-                  <p className="text-[28px] font-bold text-black">
-                    {stat.value}
-                  </p>
-                  <p className="text-[13px] text-black/50 mt-[2px]">
-                    {stat.label}
-                  </p>
-                </div>
+                <Icon size={20} />
               </div>
-            );
-          })}
-        </div>
-      )}
+              <div>
+                <p className="text-[22px] md:text-[28px] font-bold text-black leading-none">
+                  {stat.value}
+                </p>
+                <p className="text-[12px] text-black/50 mt-[4px]">
+                  {stat.label}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
 
       {/* Quick actions */}
-      <div className="bg-white rounded-[12px] p-[24px] border border-black/5 shadow-sm">
-        <h2 className="text-[18px] font-semibold text-black mb-[16px]">
+      <div className="bg-white rounded-[12px] p-[20px] md:p-[24px] border border-black/5 shadow-sm">
+        <h2 className="text-[16px] font-semibold text-black mb-[16px]">
           Quick Actions
         </h2>
         <div className="flex flex-wrap gap-[12px]">
           <Link
             to="/admin/products/add"
-            className="bg-[#DB4444] hover:bg-[#E07575] text-white text-[14px] font-medium px-[20px] py-[10px] rounded-[8px] transition-colors"
+            className="bg-[#DB4444] hover:bg-[#E07575] text-white text-[13px] font-medium px-[16px] py-[10px] rounded-[8px] transition-colors"
           >
             + Add New Product
           </Link>
           <Link
             to="/admin/products"
-            className="border border-black/20 text-black text-[14px] font-medium px-[20px] py-[10px] rounded-[8px] hover:border-[#DB4444] hover:text-[#DB4444] transition-colors"
+            className="border border-black/20 text-black text-[13px] font-medium px-[16px] py-[10px] rounded-[8px] hover:border-[#DB4444] hover:text-[#DB4444] transition-colors"
           >
             View All Products
+          </Link>
+          <Link
+            to="/admin/orders"
+            className="border border-black/20 text-black text-[13px] font-medium px-[16px] py-[10px] rounded-[8px] hover:border-[#DB4444] hover:text-[#DB4444] transition-colors"
+          >
+            View All Orders
           </Link>
         </div>
       </div>
 
-      {/* Recent products table */}
+      {/* Recent Orders */}
       <div className="bg-white rounded-[12px] border border-black/5 shadow-sm overflow-hidden">
-        <div className="flex items-center justify-between px-[24px] py-[20px] border-b border-black/5">
-          <h2 className="text-[18px] font-semibold text-black">
-            Recent Products
+        <div className="flex items-center justify-between px-[20px] md:px-[24px] py-[16px] md:py-[20px] border-b border-black/5">
+          <h2 className="text-[16px] font-semibold text-black">
+            Recent Orders
           </h2>
           <Link
-            to="/admin/products"
+            to="/admin/orders"
             className="text-[13px] text-[#DB4444] hover:underline"
           >
             View all
           </Link>
         </div>
-        <div className="overflow-x-auto">
+
+        {/* Desktop table */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="bg-[#F5F5F5]">
-                <th className="text-left px-[24px] py-[12px] text-[13px] font-semibold text-black/50">
-                  Product
+                <th className="text-left px-[24px] py-[12px] text-[12px] font-semibold text-black/40">
+                  Order ID
                 </th>
-                <th className="text-left px-[24px] py-[12px] text-[13px] font-semibold text-black/50">
-                  Price
+                <th className="text-left px-[24px] py-[12px] text-[12px] font-semibold text-black/40">
+                  Customer
                 </th>
-                <th className="text-left px-[24px] py-[12px] text-[13px] font-semibold text-black/50">
-                  Stock
+                <th className="text-left px-[24px] py-[12px] text-[12px] font-semibold text-black/40">
+                  Total
                 </th>
-                <th className="text-left px-[24px] py-[12px] text-[13px] font-semibold text-black/50">
+                <th className="text-left px-[24px] py-[12px] text-[12px] font-semibold text-black/40">
+                  Payment
+                </th>
+                <th className="text-left px-[24px] py-[12px] text-[12px] font-semibold text-black/40">
                   Status
+                </th>
+                <th className="text-left px-[24px] py-[12px] text-[12px] font-semibold text-black/40">
+                  Date
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-black/5">
-              {products.slice(0, 5).map((product) => (
+              {stats?.recent_orders?.map((order) => (
                 <tr
-                  key={product.id}
+                  key={order.id}
                   className="hover:bg-[#F5F5F5]/50 transition-colors"
                 >
-                  <td className="px-[24px] py-[16px]">
-                    <div className="flex items-center gap-[12px]">
-                      <div className="w-[40px] h-[40px] bg-[#F5F5F5] rounded-[8px] flex items-center justify-center shrink-0">
-                        <img
-                          src={
-                            product.primary_image || "/images/placeholder.png"
-                          }
-                          alt={product.name}
-                          className="w-[32px] h-[32px] object-contain"
-                        />
-                      </div>
-                      <p className="text-[14px] font-medium text-black">
-                        {product.name}
+                  <td className="px-[24px] py-[14px] text-[13px] font-medium text-black">
+                    #{order.id}
+                  </td>
+                  <td className="px-[24px] py-[14px]">
+                    <div>
+                      <p className="text-[13px] font-medium text-black">
+                        {order.first_name} {order.last_name}
                       </p>
+                      <p className="text-[11px] text-black/40">{order.email}</p>
                     </div>
                   </td>
-                  <td className="px-[24px] py-[16px] text-[14px] text-black">
-                    ₦{product.price?.toLocaleString()}
+                  <td className="px-[24px] py-[14px] text-[13px] text-black">
+                    ₦{Number(order.total).toLocaleString()}
                   </td>
-                  <td className="px-[24px] py-[16px] text-[14px] text-black">
-                    {product.stock}
-                  </td>
-                  <td className="px-[24px] py-[16px]">
+                  <td className="px-[24px] py-[14px]">
                     <span
-                      className={`text-[12px] font-semibold px-[10px] py-[4px] rounded-full ${
-                        product.stock > 0
+                      className={`text-[11px] font-semibold px-[8px] py-[3px] rounded-full ${
+                        order.payment_status === "paid"
                           ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-[#DB4444]"
+                          : "bg-orange-100 text-orange-700"
                       }`}
                     >
-                      {product.stock > 0 ? "In Stock" : "Out of Stock"}
+                      {order.payment_status}
                     </span>
+                  </td>
+                  <td className="px-[24px] py-[14px]">
+                    <span
+                      className={`text-[11px] font-semibold px-[8px] py-[3px] rounded-full ${
+                        order.status === "delivered"
+                          ? "bg-green-100 text-green-700"
+                          : order.status === "shipped"
+                            ? "bg-blue-100 text-blue-700"
+                            : "bg-orange-100 text-orange-700"
+                      }`}
+                    >
+                      {order.status}
+                    </span>
+                  </td>
+                  <td className="px-[24px] py-[14px] text-[12px] text-black/40">
+                    {new Date(order.created_at).toLocaleDateString()}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile cards */}
+        <div className="md:hidden flex flex-col divide-y divide-black/5">
+          {stats?.recent_orders?.map((order) => (
+            <div key={order.id} className="p-[16px] flex flex-col gap-[8px]">
+              <div className="flex items-center justify-between">
+                <span className="text-[13px] font-semibold text-black">
+                  Order #{order.id}
+                </span>
+                <span
+                  className={`text-[11px] font-semibold px-[8px] py-[3px] rounded-full ${
+                    order.status === "delivered"
+                      ? "bg-green-100 text-green-700"
+                      : order.status === "shipped"
+                        ? "bg-blue-100 text-blue-700"
+                        : "bg-orange-100 text-orange-700"
+                  }`}
+                >
+                  {order.status}
+                </span>
+              </div>
+              <p className="text-[13px] text-black">
+                {order.first_name} {order.last_name}
+              </p>
+              <div className="flex items-center justify-between">
+                <span className="text-[13px] font-medium text-[#DB4444]">
+                  ₦{Number(order.total).toLocaleString()}
+                </span>
+                <span className="text-[11px] text-black/40">
+                  {new Date(order.created_at).toLocaleDateString()}
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
