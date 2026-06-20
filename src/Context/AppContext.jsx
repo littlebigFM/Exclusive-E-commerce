@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, useRef } from "react";
+import { toast } from "react-toastify";
 import { useAuth } from "./AuthContext";
 import {
   addToCartAPI,
@@ -102,6 +103,7 @@ export function AppProvider({ children }) {
           }
           return [...prev, { ...product, quantity: 1 }];
         });
+        toast.success(`${product.name} added to cart`);
       } catch (error) {
         console.error("Failed to add to cart:", error);
         // If 401 Unauthorized, fall back to localStorage
@@ -120,6 +122,7 @@ export function AppProvider({ children }) {
             }
             return [...prev, { ...product, quantity: 1 }];
           });
+          toast.success(`${product.name} added to cart`);
         }
       }
     } else {
@@ -134,6 +137,7 @@ export function AppProvider({ children }) {
         }
         return [...prev, { ...product, quantity: 1 }];
       });
+      toast.success(`${product.name} added to cart`);
     }
   };
 
@@ -175,11 +179,17 @@ export function AppProvider({ children }) {
   };
 
   const toggleWishlist = (product) => {
+    const exists = wishlist.some((item) => item.id === product.id);
     setWishlist((prev) => {
-      const exists = prev.find((item) => item.id === product.id);
       if (exists) return prev.filter((item) => item.id !== product.id);
       return [...prev, product];
     });
+
+    if (exists) {
+      toast.info(`${product.name} removed from wishlist`);
+    } else {
+      toast.success(`${product.name} added to wishlist`);
+    }
   };
 
   const isInWishlist = (id) => wishlist.some((item) => item.id === id);
